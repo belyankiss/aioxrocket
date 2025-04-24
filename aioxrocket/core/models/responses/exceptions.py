@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -10,7 +10,7 @@ class ErrorProperty(BaseModel):
 class XRocketExceptionModel(BaseModel):
     success: bool
     message: str
-    errors: List[ErrorProperty]
+    errors: Optional[List[ErrorProperty]] = None
 
 class XRocketException(Exception):
     def __init__(self, error: XRocketExceptionModel):

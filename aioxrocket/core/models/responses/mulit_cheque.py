@@ -1,15 +1,41 @@
-from typing import Optional, List, Annotated
+from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field, conint, field_validator
+from pydantic import BaseModel, HttpUrl, Field
 
 from aioxrocket.core.models.enums import CountryCode
+from aioxrocket.core.models.requests.multi_cheque import MultiChequeData
+from aioxrocket.core.models.responses.base_model import Base
+
+class UserMultiCheque(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    results: List[MultiChequeData]
+
+class MultiChequeResult(Base):
+    data: UserMultiCheque
+
+class TGResource(BaseModel):
+    telegramId: Union[str, int]
+    name: str
+    username: str
+
+class ExistCheque(MultiChequeData):
+    refProgramPercents: Optional[int]
+    refRewardPerUser: Optional[float]
+    state: str
+    link: HttpUrl
+    forNewUsersOnly: Optional[int] = Field(default=0)
+    linkedWallet: Optional[int] = Field(default=0)
+    tgResources: List[TGResource]
+    activations: int
+    refRewards: int
+
+class CreatedMultiCheque(Base):
+    data: ExistCheque
 
 
-class MultiChequeData(BaseModel):
-    currency: str
-    chequePerUser: Annotated[float, Field(gt=0, description="Cheque amount for one user. Max 9 decimal places")]
-    usersNumber: Annotated[int, Field(description="Number of users to save multi cheque. Integer only", gt=0)]
-    refProgram: Annotated[int, Field(ge=0, le=100, description="Referral program percentage (0-100)")]
+class EditMultiChequeData(BaseModel):
     password: Optional[str] = Field(
         default=None, max_length=100, description="Password for cheque"
     )
@@ -39,12 +65,3 @@ class MultiChequeData(BaseModel):
     enabledCountries: List[CountryCode] = Field(
         default=[], description="Enabled countries", examples=[CountryCode.AD, CountryCode.AM]
     )
-
-
-    @field_validator("chequePerUser", mode="before")
-    @classmethod
-    def validate_decimal_places(cls, v):
-        as_str = f"{v:.9f}".rstrip("0").rstrip(".")
-        return float(as_str)
-
-
