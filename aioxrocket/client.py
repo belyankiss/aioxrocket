@@ -28,13 +28,3 @@ class AioXRocket(BaseSession):
     def __repr__(self):
         return f"{self.api_key}, {self.url}"
 
-if __name__ == "__main__":
-    import asyncio
-    a = AioXRocket(api_key="24d750171425129a163753f54")
-    print(asyncio.run(a.app()))
-    # print(asyncio.run(a.multi_cheque(data=MultiChequeData(
-    #     currency="TRX",
-    #     chequePerUser=20.2325364563456345,
-    #     usersNumber=4,
-    #     refProgram=5
-    # ))))

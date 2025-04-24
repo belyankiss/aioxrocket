@@ -55,11 +55,3 @@ class MultiChequeData(BaseModel):
         return float(as_str)
 
 
-if __name__ == '__main__':
-    s = MultiChequeData(
-        currency="TRX",
-        chequePerUser=20.2325364563456345,
-        usersNumber=4,
-        refProgram=5
-    )
-    print(s.model_dump())

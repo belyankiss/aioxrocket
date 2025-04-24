@@ -3,9 +3,9 @@ from typing import List
 
 from aiohttp import ClientSession
 from pydantic import ValidationError
-from typing_extensions import Literal, Optional
+from typing_extensions import Literal
 
-from aioxrocket.core.models.responses.exceptions import XRocketExceptionModel, XRocketException, ErrorProperty
+from aioxrocket.core.models.responses.exceptions import XRocketExceptionModel, ErrorProperty
 from aioxrocket.core.session.xrocket import PRODUCTION
 
 
